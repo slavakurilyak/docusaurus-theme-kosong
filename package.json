@@ -1,0 +1,27 @@
+{
+  "name": "@huijing/docusaurus-theme-kosong",
+  "version": "0.9.0",
+  "description": "No CSS dependencies theme for Docusaurus 2",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@mdx-js/mdx": "^1.5.1",
+    "@mdx-js/react": "^1.5.1",
+    "classnames": "^2.2.6",
+    "clipboard": "^2.0.4",
+    "parse-numeric-range": "^0.0.2",
+    "prism-react-renderer": "^1.0.2",
+    "react-toggle": "^4.1.1"
+  },
+  "peerDependencies": {
+    "@docusaurus/core": "^2.0.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  },
+  "engines": {
+    "node": ">= 8.10.0"
+  }
+}
