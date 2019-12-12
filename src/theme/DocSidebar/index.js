@@ -1,10 +1,3 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, {useState, useCallback} from 'react';
 import classnames from 'classnames';
 
@@ -37,20 +30,19 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
       return (
         items.length > 0 && (
           <li
-            className={classnames('menu__list-item', {
-              'menu__list-item--collapsed': collapsed,
+            className={classnames({
+              'collapsed': collapsed,
             })}
             key={label}>
             <a
-              className={classnames('menu__link', {
-                'menu__link--sublist': collapsible,
-                'menu__link--active': collapsible && !item.collapsed,
+              className={classnames({
+                'active': collapsible && !item.collapsed,
               })}
               href="#!"
               onClick={collapsible ? handleItemClick : undefined}>
               {label}
             </a>
-            <ul className="menu__list">
+            <ul>
               {items.map(childItem => (
                 <DocSidebarItem
                   key={childItem.label}
@@ -67,10 +59,9 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
     case 'link':
     default:
       return (
-        <li className="menu__list-item" key={label}>
+        <li key={label}>
           <Link
-            activeClassName="menu__link--active"
-            className="menu__link"
+            activeClassName="active"
             exact
             to={href}
             onClick={onItemClick}>
@@ -131,24 +122,18 @@ function DocSidebar(props) {
   }
 
   return (
-    <div className={styles.sidebar}>
-      <div
-        className={classnames('menu', 'menu--responsive', {
-          'menu--show': showResponsiveSidebar,
+      <nav
+        className={classnames('menu', {
+          'show': showResponsiveSidebar,
         })}>
         <button
           aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
-          className="button button--secondary button--sm menu__button"
           type="button"
           onClick={() => {
             setShowResponsiveSidebar(!showResponsiveSidebar);
           }}>
           {showResponsiveSidebar ? (
-            <span
-              className={classnames(
-                styles.sidebarMenuIcon,
-                styles.sidebarMenuCloseIcon,
-              )}>
+            <span>
               &times;
             </span>
           ) : (
@@ -171,7 +156,7 @@ function DocSidebar(props) {
             </svg>
           )}
         </button>
-        <ul className="menu__list">
+        <ul>
           {sidebarData.map(item => (
             <DocSidebarItem
               key={item.label}
@@ -183,8 +168,7 @@ function DocSidebar(props) {
             />
           ))}
         </ul>
-      </div>
-    </div>
+      </nav>
   );
 }
 
