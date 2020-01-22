@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.footerLogoLink {
-  opacity: 0.5;
-  transition: opacity 0.15s ease-in-out;
+import {useContext} from 'react';
+
+import ThemeContext from '@theme/ThemeContext';
+
+function useThemeContext() {
+  return useContext(ThemeContext);
 }
 
-.footerLogoLink:hover {
-  opacity: 1;
-}
+export default useThemeContext;

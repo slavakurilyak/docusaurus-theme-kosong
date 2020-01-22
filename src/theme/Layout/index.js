@@ -9,6 +9,8 @@ import React from 'react';
 import Head from '@docusaurus/Head';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+
+import ThemeProvider from '@theme/ThemeProvider';
 import Navbar from '@theme/Navbar';
 import Footer from '@theme/Footer';
 
@@ -37,9 +39,13 @@ function Layout(props) {
   const metaImage = image || defaultImage;
   const metaImageUrl = siteUrl + useBaseUrl(metaImage);
   const faviconUrl = useBaseUrl(favicon);
+
   return (
-    <>
+    <ThemeProvider>
       <Head>
+        {/* TODO: Do not assume that it is in english language */}
+        <html lang="en" />
+
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         {metaTitle && <title>{metaTitle}</title>}
         {metaTitle && <meta property="og:title" content={metaTitle} />}
@@ -61,9 +67,9 @@ function Layout(props) {
         <meta name="twitter:card" content="summary" />
       </Head>
       <Navbar />
-      <main>{children}</main>
+      <div className="main-wrapper">{children}</div>
       {!noFooter && <Footer />}
-    </>
+    </ThemeProvider>
   );
 }
 

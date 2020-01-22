@@ -1,6 +1,6 @@
 {
   "name": "@huijing/docusaurus-theme-kosong",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "No CSS dependencies theme for Docusaurus 2",
   "main": "src/index.js",
   "publishConfig": {
@@ -14,6 +14,7 @@
     "clipboard": "^2.0.4",
     "parse-numeric-range": "^0.0.2",
     "prism-react-renderer": "^1.0.2",
+    "react-router-dom": "^5.1.2",
     "react-toggle": "^4.1.1"
   },
   "peerDependencies": {
@@ -22,6 +23,6 @@
     "react-dom": "^16.8.4"
   },
   "engines": {
-    "node": ">= 8.10.0"
+    "node": ">=10.9.0"
   }
 }

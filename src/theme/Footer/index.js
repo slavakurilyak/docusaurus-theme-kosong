@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import React from 'react';
 import classnames from 'classnames';
 
@@ -10,6 +17,7 @@ function FooterLink({to, href, label, ...props}) {
   const toUrl = useBaseUrl(to);
   return (
     <Link
+      className="footer__link-item"
       {...(href
         ? {
             target: '_blank',
@@ -44,47 +52,63 @@ function Footer() {
 
   return (
     <footer
-      className={classnames({
+      className={classnames('footer', {
         'footer--dark': footer.style === 'dark',
       })}>
-      {links && links.length > 0 && (
-      <div>
-        {links.map((linkItem, i) => (
-          <div key={i}>
-            {linkItem.title != null ? <h4>{linkItem.title}</h4> : null}
-            {linkItem.items != null &&
-            Array.isArray(linkItem.items) &&
-            linkItem.items.length > 0 ? (
-              <ul>
-                {linkItem.items.map(item => (
-                  <li key={item.href || item.to}>
-                    <Link
-                      {...item}
-                      {...(item.href
-                        ? {
-                            target: '_blank',
-                            rel: 'noopener noreferrer',
-                            href: item.href,
-                          }
-                        : {
-                            to: withBaseUrl(item.to),
-                          })}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+      <div className="container">
+        {links && links.length > 0 && (
+          <div className="row footer__links">
+            {links.map((linkItem, i) => (
+              <div key={i} className="col footer__col">
+                {linkItem.title != null ? (
+                  <h4 className="footer__title">{linkItem.title}</h4>
+                ) : null}
+                {linkItem.items != null &&
+                Array.isArray(linkItem.items) &&
+                linkItem.items.length > 0 ? (
+                  <ul className="footer__items">
+                    {linkItem.items.map((item, key) =>
+                      item.html ? (
+                        <li
+                          key={key}
+                          className="footer__item"
+                          dangerouslySetInnerHTML={{
+                            __html: item.html,
+                          }}
+                        />
+                      ) : (
+                        <li key={item.href || item.to} className="footer__item">
+                          <FooterLink {...item} />
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                ) : null}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+        {(logo || copyright) && (
+          <div className="text--center">
+            {logo && logo.src && (
+              <div className="margin-bottom--sm">
+                {logo.href ? (
+                  <a
+                    href={logo.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.footerLogoLink}>
+                    <FooterLogo alt={logo.alt} url={logoUrl} />
+                  </a>
+                ) : (
+                  <FooterLogo alt={logo.alt} url={logoUrl} />
+                )}
+              </div>
+            )}
+            {copyright}
+          </div>
+        )}
       </div>
-      )}
-      {(logo || copyright) && (
-      <div>
-        {logo && logo.src && <img alt={logo.alt} src={logo.src} />}
-        {copyright}
-      </div>
-      )}
     </footer>
   );
 }

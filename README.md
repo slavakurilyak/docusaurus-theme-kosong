@@ -1,6 +1,6 @@
 # Docusaurus Theme Kosong
 
-No external CSS dependencies theme for Docusaurus 2.
+No external CSS dependencies and minimal classes theme for Docusaurus 2. No blog just docs.
 
 ## Installation
 

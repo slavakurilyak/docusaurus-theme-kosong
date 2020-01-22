@@ -1,7 +1,17 @@
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import React, {useState, useCallback} from 'react';
 import classnames from 'classnames';
-
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import Link from '@docusaurus/Link';
+import isInternalUrl from '@docusaurus/utils'; // eslint-disable-line import/no-extraneous-dependencies
 
 import styles from './styles.module.css';
 
@@ -30,19 +40,20 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
       return (
         items.length > 0 && (
           <li
-            className={classnames({
-              'collapsed': collapsed,
+            className={classnames('menu__list-item', {
+              'menu__list-item--collapsed': collapsed,
             })}
             key={label}>
             <a
-              className={classnames({
-                'active': collapsible && !item.collapsed,
+              className={classnames('menu__link', {
+                'menu__link--sublist': collapsible,
+                'menu__link--active': collapsible && !item.collapsed,
               })}
               href="#!"
               onClick={collapsible ? handleItemClick : undefined}>
               {label}
             </a>
-            <ul>
+            <ul className="menu__list">
               {items.map(childItem => (
                 <DocSidebarItem
                   key={childItem.label}
@@ -59,12 +70,20 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
     case 'link':
     default:
       return (
-        <li key={label}>
+        <li className="menu__list-item" key={label}>
           <Link
-            activeClassName="active"
-            exact
+            className="menu__link"
             to={href}
-            onClick={onItemClick}>
+            {...(isInternalUrl(href)
+              ? {
+                  activeClassName: 'menu__link--active',
+                  exact: true,
+                  onClick: onItemClick,
+                }
+              : {
+                  target: '_blank',
+                  rel: 'noreferrer noopener',
+                })}>
             {label}
           </Link>
         </li>
@@ -95,6 +114,10 @@ function mutateSidebarCollapsingState(item, location) {
 
 function DocSidebar(props) {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
+  const {
+    siteConfig: {themeConfig: {navbar: {title, logo = {}} = {}}} = {},
+  } = useDocusaurusContext();
+  const logoUrl = useBaseUrl(logo.src);
 
   const {
     docsSidebars,
@@ -102,6 +125,8 @@ function DocSidebar(props) {
     sidebar: currentSidebar,
     sidebarCollapsible,
   } = props;
+
+  useLockBodyScroll(showResponsiveSidebar);
 
   if (!currentSidebar) {
     return null;
@@ -122,18 +147,28 @@ function DocSidebar(props) {
   }
 
   return (
-      <nav
-        className={classnames('menu', {
-          'show': showResponsiveSidebar,
+    <div className={styles.sidebar}>
+      <div className={styles.sidebarLogo}>
+        {logo != null && <img src={logoUrl} alt={logo.alt} />}
+        {title != null && <strong>{title}</strong>}
+      </div>
+      <div
+        className={classnames('menu', 'menu--responsive', styles.menu, {
+          'menu--show': showResponsiveSidebar,
         })}>
         <button
           aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
+          className="button button--secondary button--sm menu__button"
           type="button"
           onClick={() => {
             setShowResponsiveSidebar(!showResponsiveSidebar);
           }}>
           {showResponsiveSidebar ? (
-            <span>
+            <span
+              className={classnames(
+                styles.sidebarMenuIcon,
+                styles.sidebarMenuCloseIcon,
+              )}>
               &times;
             </span>
           ) : (
@@ -156,7 +191,7 @@ function DocSidebar(props) {
             </svg>
           )}
         </button>
-        <ul>
+        <ul className="menu__list">
           {sidebarData.map(item => (
             <DocSidebarItem
               key={item.label}
@@ -168,7 +203,8 @@ function DocSidebar(props) {
             />
           ))}
         </ul>
-      </nav>
+      </div>
+    </div>
   );
 }
 
